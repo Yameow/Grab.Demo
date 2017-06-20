@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grab.Demo", "Grab.Demo\Grab.Demo.csproj", "{1D238102-3660-481B-BF7A-E9368A009A2D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grab.Common", "Grab.Common\Grab.Common.csproj", "{5FEE8058-3ECA-4A61-BA8B-6B524C2E63A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grab.Model", "Grab.Model\Grab.Model.csproj", "{07B5AC71-6E44-4A82-86CA-4D76E6D6F127}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{1D238102-3660-481B-BF7A-E9368A009A2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D238102-3660-481B-BF7A-E9368A009A2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D238102-3660-481B-BF7A-E9368A009A2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FEE8058-3ECA-4A61-BA8B-6B524C2E63A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FEE8058-3ECA-4A61-BA8B-6B524C2E63A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FEE8058-3ECA-4A61-BA8B-6B524C2E63A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FEE8058-3ECA-4A61-BA8B-6B524C2E63A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07B5AC71-6E44-4A82-86CA-4D76E6D6F127}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07B5AC71-6E44-4A82-86CA-4D76E6D6F127}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07B5AC71-6E44-4A82-86CA-4D76E6D6F127}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07B5AC71-6E44-4A82-86CA-4D76E6D6F127}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
