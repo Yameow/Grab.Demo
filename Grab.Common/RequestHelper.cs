@@ -62,7 +62,7 @@ namespace Grab.Common
             }
         }
 
-        public static string HttpGetWithProxy(string proxy, string url, Encoding encoding, int tryTimes = 1, int thread = 0)
+        public static string HttpGetWithProxy(string proxy, string url, Encoding encoding)
         {
             var timeOut = 10;
 #if DEBUG
