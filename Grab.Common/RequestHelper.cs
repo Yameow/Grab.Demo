@@ -13,6 +13,7 @@ namespace Grab.Common
     {
 
         #region Timeout Check
+
         public static TResult TimeoutAfter<TResult>(this Func<TResult> func, TimeSpan timeout)
         {
             var task = Task.Run(func);
@@ -24,70 +25,36 @@ namespace Grab.Common
             var result = await Task.WhenAny(task, Task.Delay(timeout));
             if (result == task)
             {
-                // Task completed within timeout.
                 return task.GetAwaiter().GetResult();
             }
             else
             {
-                // Task timed out.
                 throw new TimeoutException();
             }
         }
         #endregion
 
-        public static string HttpGet(string url, Encoding encoding, bool exceptionBackToUpper = false)
+        public static string HttpGet(string url, Encoding encoding, bool exceptionBackToUpper = true, int timeOut = 20000)
         {
+            HttpWebResponse response = null;
+            StreamReader reader = null;
+            HttpWebRequest request = null;
+            string html = string.Empty;
             try
             {
-                string html = string.Empty;
-                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
-                request.Timeout = 20000;
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                StreamReader reader = GetStreamReader(encoding, response);
-
+                request = (HttpWebRequest)HttpWebRequest.Create(url);
+                request.Timeout = timeOut;
+                request.ReadWriteTimeout = timeOut;
+                response = (HttpWebResponse)request.GetResponse();
+                reader = GetStreamReader(encoding, response);
                 html = reader.ReadToEnd();
-                reader.Close();
-                reader.Dispose();
-                response.Close();
-                response.Dispose();
-                request = null;
                 return html;
             }
             catch (Exception ex)
             {
                 if (exceptionBackToUpper)
                     throw ex;
-                Console.WriteLine("Request Error!" + ex.Message);
                 return string.Empty;
-            }
-        }
-
-        public static string HttpGetWithProxy(string proxy, string url, Encoding encoding)
-        {
-            var timeOut = 10;
-#if DEBUG
-            timeOut = 5;
-#endif
-            HttpWebResponse response = null;
-            StreamReader reader = null;
-            HttpWebRequest request = null;
-            try
-            {
-                string html = string.Empty;
-                request = (HttpWebRequest)HttpWebRequest.Create(url);
-
-                request.Proxy = new WebProxy(proxy, true);
-                request.Timeout = timeOut * 1000;
-                request.ReadWriteTimeout = timeOut * 1000;
-                response = (HttpWebResponse)request.GetResponse();
-                reader = GetStreamReader(encoding, response);
-                html = reader.ReadToEnd();
-                return html;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Request Error!" + e.Message);
-                return null;
             }
             finally
             {
@@ -99,7 +66,372 @@ namespace Grab.Common
                 if (response != null)
                 {
                     response.Close();
-                    response = null;
+                    response.Dispose();
+                }
+                if (request != null)
+                {
+                    request = null;
+                }
+            }
+        }
+
+        public static string HttpGet(string url, Encoding encoding, CookieCollection cookie, bool exceptionBackToUpper = true, int timeOut = 20000)
+        {
+            HttpWebResponse response = null;
+            StreamReader reader = null;
+            HttpWebRequest request = null;
+            string html = string.Empty;
+            try
+            {
+                request = (HttpWebRequest)WebRequest.Create(url);
+                request.Timeout = timeOut;
+                request.ReadWriteTimeout = timeOut;                
+                CookieContainer cookieContainer = new CookieContainer();
+                cookieContainer.Add(cookie);
+                request.CookieContainer = cookieContainer;
+                response = (HttpWebResponse)request.GetResponse();
+                reader = GetStreamReader(encoding, response);
+                html = reader.ReadToEnd();
+                return html;
+            }
+            catch (Exception ex)
+            {
+                if (exceptionBackToUpper)
+                    throw ex;
+                return string.Empty;
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                    reader.Dispose();
+                }
+                if (response != null)
+                {
+                    response.Close();
+                    response.Dispose();
+                }
+                if (request != null)
+                {
+                    request = null;
+                }
+            }
+        }
+
+        public static string HttpGet(string url, Encoding encoding, CookieContainer cookieContainer, bool exceptionBackToUpper = true, int timeOut = 20000)
+        {
+            HttpWebResponse response = null;
+            StreamReader reader = null;
+            HttpWebRequest request = null;
+            string html = string.Empty;
+            try
+            {
+                request = (HttpWebRequest)WebRequest.Create(url);
+                request.Timeout = timeOut;
+                request.ReadWriteTimeout = timeOut;
+                request.CookieContainer = cookieContainer;
+                response = (HttpWebResponse)request.GetResponse();
+                reader = GetStreamReader(encoding, response);
+                html = reader.ReadToEnd();
+                return html;
+            }
+            catch (Exception ex)
+            {
+                if (exceptionBackToUpper)
+                    throw ex;
+                return string.Empty;
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                    reader.Dispose();
+                }
+                if (response != null)
+                {
+                    response.Close();
+                    response.Dispose();
+                }
+                if (request != null)
+                {
+                    request = null;
+                }
+            }
+        }
+
+        public static string HttpGet(string url, Encoding encoding, string proxy, bool exceptionBackToUpper = true, int timeOut = 20000)
+        {
+            HttpWebResponse response = null;
+            StreamReader reader = null;
+            HttpWebRequest request = null;
+            string html = string.Empty;
+            try
+            {
+                request = (HttpWebRequest)HttpWebRequest.Create(url);
+
+                request.Proxy = new WebProxy(proxy, true);
+                request.Timeout = timeOut;
+                request.ReadWriteTimeout = timeOut;
+                response = (HttpWebResponse)request.GetResponse();
+                reader = GetStreamReader(encoding, response);
+                html = reader.ReadToEnd();
+                return html;
+            }
+            catch (Exception e)
+            {
+                if (exceptionBackToUpper)
+                    throw e;
+                return string.Empty;
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                    reader.Dispose();
+                }
+                if (response != null)
+                {
+                    response.Close();
+                    response.Dispose();
+                }
+                if (request != null)
+                {
+                    request = null;
+                }
+            }
+        }
+
+        public static string HttpGet(string url, Encoding encoding, CookieCollection cookie, string proxy, bool exceptionBackToUpper = true, int timeOut = 20000)
+        {
+            HttpWebResponse response = null;
+            StreamReader reader = null;
+            HttpWebRequest request = null;
+            string html = string.Empty;
+            try
+            {
+                request = (HttpWebRequest)WebRequest.Create(url);
+                request.Timeout = timeOut;
+                request.ReadWriteTimeout = timeOut;
+                request.Proxy = new WebProxy(proxy, true);
+                CookieContainer cookieContainer = new CookieContainer();
+                cookieContainer.Add(cookie);
+                request.CookieContainer = cookieContainer;
+                response = (HttpWebResponse)request.GetResponse();
+                reader = GetStreamReader(encoding, response);
+                html = reader.ReadToEnd();
+                return html;
+            }
+            catch (Exception ex)
+            {
+                if (exceptionBackToUpper)
+                    throw ex;
+                return string.Empty;
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                    reader.Dispose();
+                }
+                if (response != null)
+                {
+                    response.Close();
+                    response.Dispose();
+                }
+                if (request != null)
+                {
+                    request = null;
+                }
+            }
+        }
+
+        public static string HttpGet(string url, Encoding encoding, CookieContainer cookieContainer, string proxy, bool exceptionBackToUpper = true, int timeOut = 20000)
+        {
+            HttpWebResponse response = null;
+            StreamReader reader = null;
+            HttpWebRequest request = null;
+            string html = string.Empty;
+            try
+            {
+                request = (HttpWebRequest)WebRequest.Create(url);
+                request.Timeout = timeOut;
+                request.ReadWriteTimeout = timeOut;
+                request.Proxy = new WebProxy(proxy, true);
+                request.CookieContainer = cookieContainer;
+                response = (HttpWebResponse)request.GetResponse();
+                reader = GetStreamReader(encoding, response);
+                html = reader.ReadToEnd();
+                return html;
+            }
+            catch (Exception ex)
+            {
+                if (exceptionBackToUpper)
+                    throw ex;
+                return string.Empty;
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                    reader.Dispose();
+                }
+                if (response != null)
+                {
+                    response.Close();
+                    response.Dispose();
+                }
+                if (request != null)
+                {
+                    request = null;
+                }
+            }
+        }
+
+
+        public static string HttpPost(string posturl, string postData, Encoding encoding, bool exceptionBackToUpper = true, int timeOut = 20000)
+        {
+            HttpWebResponse response = null;
+            StreamReader reader = null;
+            HttpWebRequest request = null;
+            string html = string.Empty;
+            try
+            {
+                byte[] data = encoding.GetBytes(postData);
+                request = (HttpWebRequest)WebRequest.Create(posturl);
+                request.AllowAutoRedirect = true;
+                request.Method = "POST";
+                request.Timeout = timeOut;
+                request.ReadWriteTimeout = timeOut;
+                request.ContentType = "application/x-www-form-urlencoded";
+                request.ContentLength = data.Length;
+                Stream stream = request.GetRequestStream();
+                stream.Write(data, 0, data.Length);
+                stream.Close();
+                response = request.GetResponse() as HttpWebResponse;
+                reader = GetStreamReader(encoding, response);               
+                html = reader.ReadToEnd();
+                return html;
+            }
+            catch (Exception ex)
+            {
+                if (exceptionBackToUpper)
+                    throw ex;
+                return string.Empty;
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                    reader.Dispose();
+                }
+                if (response != null)
+                {
+                    response.Close();
+                    response.Dispose();
+                }
+                if (request != null)
+                {
+                    request = null;
+                }
+            }
+        }
+
+        public static string HttpPost(string posturl, string postData, Encoding encoding, CookieContainer cookieContainer, bool exceptionBackToUpper = true, int timeOut = 20000)
+        {
+            HttpWebResponse response = null;
+            StreamReader reader = null;
+            HttpWebRequest request = null;
+            string html = string.Empty;
+            try
+            {
+                byte[] data = encoding.GetBytes(postData);
+                request = (HttpWebRequest)WebRequest.Create(posturl);
+                request.AllowAutoRedirect = true;
+                request.Method = "POST";
+                request.Timeout = timeOut;
+                request.ReadWriteTimeout = timeOut;
+                request.ContentType = "application/x-www-form-urlencoded";
+                request.ContentLength = data.Length;
+                Stream stream = request.GetRequestStream();
+                stream.Write(data, 0, data.Length);
+                stream.Close();
+                response = request.GetResponse() as HttpWebResponse;
+                reader = GetStreamReader(encoding, response);
+                html = reader.ReadToEnd();
+                return html;
+            }
+            catch (Exception ex)
+            {
+                if (exceptionBackToUpper)
+                    throw ex;
+                return string.Empty;
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                    reader.Dispose();
+                }
+                if (response != null)
+                {
+                    response.Close();
+                    response.Dispose();
+                }
+                if (request != null)
+                {
+                    request = null;
+                }
+            }
+        }
+
+        public static string HttpPost(string posturl, string postData, Encoding encoding, CookieCollection cookie, bool exceptionBackToUpper = true, int timeOut = 20000)
+        {
+            HttpWebResponse response = null;
+            StreamReader reader = null;
+            HttpWebRequest request = null;
+            string html = string.Empty;
+            try
+            {
+                byte[] data = encoding.GetBytes(postData);
+                request = (HttpWebRequest)WebRequest.Create(posturl);
+                request.AllowAutoRedirect = true;
+                request.Method = "POST";
+                request.Timeout = timeOut;
+                request.ReadWriteTimeout = timeOut;
+                request.ContentType = "application/x-www-form-urlencoded";
+                request.ContentLength = data.Length;
+                Stream stream = request.GetRequestStream();
+                stream.Write(data, 0, data.Length);
+                stream.Close();
+                response = request.GetResponse() as HttpWebResponse;
+                reader = GetStreamReader(encoding, response);
+                html = reader.ReadToEnd();
+                return html;
+            }
+            catch (Exception ex)
+            {
+                if (exceptionBackToUpper)
+                    throw ex;
+                return string.Empty;
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                    reader.Dispose();
+                }
+                if (response != null)
+                {
+                    response.Close();
+                    response.Dispose();
                 }
                 if (request != null)
                 {
@@ -110,7 +442,7 @@ namespace Grab.Common
 
         #region Private Method
 
-        private static StreamReader GetStreamReader(Encoding encoding, WebResponse response)
+        private static StreamReader GetStreamReader(Encoding encoding, HttpWebResponse response)
         {
             var contentEncoding = response.Headers.GetValues("Content-Encoding");
             if (contentEncoding != null && contentEncoding[0].Equals("gzip"))
