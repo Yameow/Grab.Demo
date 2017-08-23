@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grab.Common", "Grab.Common\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grab.Model", "Grab.Model\Grab.Model.csproj", "{07B5AC71-6E44-4A82-86CA-4D76E6D6F127}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grab.Cache", "Grab.Cache\Grab.Cache.csproj", "{7D0C87B1-8875-4958-A062-3930A770DCF5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{07B5AC71-6E44-4A82-86CA-4D76E6D6F127}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07B5AC71-6E44-4A82-86CA-4D76E6D6F127}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07B5AC71-6E44-4A82-86CA-4D76E6D6F127}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D0C87B1-8875-4958-A062-3930A770DCF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D0C87B1-8875-4958-A062-3930A770DCF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D0C87B1-8875-4958-A062-3930A770DCF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D0C87B1-8875-4958-A062-3930A770DCF5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

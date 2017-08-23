@@ -3,19 +3,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Grab.Common
 {
-    public class Proxy
+    public class ProxyHelper
     {
-        private static ILog _logger = LogManager.GetLogger(typeof(Proxy));
+        private const int MaxCount = 10;
+        private static ILog _logger = LogManager.GetLogger(typeof(ProxyHelper));
         /// <summary>
         /// http://www.proxylists.net/cn_0.html
         /// </summary>
         /// <returns></returns>
-        IList<string> GetProxyList0()
+        IList<string> GetProxyList1()
         {
             _logger.Info("Init proxy list.");
             List<string> list = new List<string>();
@@ -84,7 +85,7 @@ namespace Grab.Common
                 {
                     Console.WriteLine("正在加载代理源第{0}页。。。", i);
                     var url = string.Format(urlFormat, i);
-                    string responseData = HttpGet(url, Encoding.UTF8);
+                    string responseData = RequestHelper.HttpGet(url, Encoding.UTF8);
                     //string pattern = @" <tr>[\s\t\n]+<td>([^<]*)</td>[\s\t\n]+<td>([^<]*)</td>[\s\t\n]+<td>([^<]*)</td>[\s\t\n]+<td>([^<]*)</td>[\s\t\n]+<td>([\s\S]*)</td>[\s\t\n]+<td>([^<]*)</td>[\s\t\n]+<td>([^<]*)</td>[\s\t\n]+</tr>";
                     HtmlAgilityPack.HtmlDocument html = new HtmlAgilityPack.HtmlDocument();
                     html.LoadHtml(responseData);

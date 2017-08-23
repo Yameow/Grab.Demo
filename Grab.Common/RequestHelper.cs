@@ -11,7 +11,6 @@ namespace Grab.Common
 {
     public static class RequestHelper
     {
-
         #region Timeout Check
 
         public static TResult TimeoutAfter<TResult>(this Func<TResult> func, TimeSpan timeout)
@@ -32,7 +31,10 @@ namespace Grab.Common
                 throw new TimeoutException();
             }
         }
+
         #endregion
+
+        #region HttpGet
 
         public static string HttpGet(string url, Encoding encoding, bool exceptionBackToUpper = true, int timeOut = 20000)
         {
@@ -249,6 +251,10 @@ namespace Grab.Common
             }
         }
 
+        #endregion
+
+        #region HttpPost
+
         public static string HttpGet(string url, Encoding encoding, CookieContainer cookieContainer, string proxy, bool exceptionBackToUpper = true, int timeOut = 20000)
         {
             HttpWebResponse response = null;
@@ -291,7 +297,6 @@ namespace Grab.Common
                 }
             }
         }
-
 
         public static string HttpPost(string posturl, string postData, Encoding encoding, bool exceptionBackToUpper = true, int timeOut = 20000)
         {
@@ -439,6 +444,8 @@ namespace Grab.Common
                 }
             }
         }
+
+        #endregion
 
         #region Private Method
 
