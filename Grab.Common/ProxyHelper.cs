@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace Grab.Common
 {
@@ -16,7 +18,7 @@ namespace Grab.Common
         /// http://www.proxylists.net/cn_0.html
         /// </summary>
         /// <returns></returns>
-        IList<string> GetProxyList1()
+        private IList<string> GetProxyList0()
         {
             _logger.Info("Init proxy list.");
             List<string> list = new List<string>();
@@ -24,7 +26,7 @@ namespace Grab.Common
             {
                 var urlFormat = "http://www.proxylists.net/cn_{0}.html";
                 bool flag = true;
-                for (int i = 0; i < MaxCount && flag; i++)
+                for (int i = 0; i < MaxPageCnt && flag; i++)
                 {
                     var url = string.Format(urlFormat, i);
                     string html = RequestHelper.HttpGet(url, Encoding.UTF8);
@@ -36,7 +38,7 @@ namespace Grab.Common
                         foreach (Match m in collection)
                         {
                             var js = HttpUtility.UrlDecode(m.Groups[1].Value.Trim());
-                            var ip = RegexMatch(@"\d*\.\d*\.\d*\.\d*", js, 0);
+                            var ip = RegexHelper. RegexMatch(@"\d*\.\d*\.\d*\.\d*", js, 0);
                             list.Add(ip + ":" + m.Groups[2].Value.Trim());
                         }
                     }
@@ -58,7 +60,7 @@ namespace Grab.Common
             {
                 if (list.Count <= 0)
                 {
-                    list = GetDefaultProxyList();
+                    list = GetDefaultProxyList().ToList();
                 }
             }
             return list.Distinct().ToList();
@@ -123,7 +125,7 @@ namespace Grab.Common
             {
                 if (list.Count <= 0)
                 {
-                    list = GetDefaultProxyList();
+                    list = GetDefaultProxyList().ToList();
                 }
             }
             return list.Distinct().ToList();
@@ -185,10 +187,15 @@ namespace Grab.Common
             {
                 if (list.Count <= 0)
                 {
-                    list = GetDefaultProxyList();
+                    list = GetDefaultProxyList().ToList();
                 }
             }
             return list.Distinct().ToList();
+        }
+
+        IList<string> GetDefaultProxyList()
+        {
+            return new List<string>();
         }
     }
 }
