@@ -51,9 +51,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigHelper.cs" />
+    <Compile Include="Enum.cs" />
+    <Compile Include="LoggerHelper.cs" />
     <Compile Include="ProxyHelper.cs" />
     <Compile Include="HtmlHelper.cs" />
-    <Compile Include="Proxy.cs" />
     <Compile Include="RegexHelper.cs" />
     <Compile Include="RequestHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

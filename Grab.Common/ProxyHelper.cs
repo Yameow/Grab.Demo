@@ -18,7 +18,7 @@ namespace Grab.Common
         /// http://www.proxylists.net/cn_0.html
         /// </summary>
         /// <returns></returns>
-        private IList<string> GetProxyList0()
+        private IList<string> GetProxyList1()
         {
             _logger.Info("Init proxy list.");
             List<string> list = new List<string>();
@@ -26,7 +26,7 @@ namespace Grab.Common
             {
                 var urlFormat = "http://www.proxylists.net/cn_{0}.html";
                 bool flag = true;
-                for (int i = 0; i < MaxPageCnt && flag; i++)
+                for (int i = 0; i < MaxCount && flag; i++)
                 {
                     var url = string.Format(urlFormat, i);
                     string html = RequestHelper.HttpGet(url, Encoding.UTF8);

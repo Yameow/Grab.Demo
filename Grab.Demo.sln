@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grab.Model", "Grab.Model\Gr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grab.Cache", "Grab.Cache\Grab.Cache.csproj", "{7D0C87B1-8875-4958-A062-3930A770DCF5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{962A74AB-EEF8-4195-B620-B1077AE20393}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{07B5AC71-6E44-4A82-86CA-4D76E6D6F127} = {962A74AB-EEF8-4195-B620-B1077AE20393}
 	EndGlobalSection
 EndGlobal

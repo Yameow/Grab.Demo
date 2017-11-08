@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Grab.Model
+namespace Grab.Common
 {
-    public class Class1
+    public static class Enum
     {
     }
 }
